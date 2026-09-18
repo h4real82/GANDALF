@@ -1,0 +1,61 @@
+# Environment & Secret Keys (DO NOT COMMIT!)
+.env
+.env.local
+.env.*.local
+backend/.env
+*.env
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python & Pytest
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# LangGraph & Agent Sandbox Runs
+backend/workspace/run_*
+backend/workspace/
+
+# Build & Vite Output
+dist/
+dist-ssr/
+*.local
+
+# Editor & OS Files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
