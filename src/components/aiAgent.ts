@@ -18,6 +18,8 @@ export function initAiAgent(
   const apiKeyInput = document.getElementById('agent-api-key') as HTMLInputElement;
   const btnSaveKey = document.getElementById('btn-save-key');
   const keyStatusPill = document.getElementById('agent-key-status');
+  const langsmithPill = document.getElementById('agent-langsmith-status');
+  const langsmithText = document.getElementById('agent-langsmith-text');
 
   // Display elements in modal
   const agentStatusPill = document.getElementById('agent-status-pill');
@@ -57,6 +59,15 @@ export function initAiAgent(
           } else {
             keyStatusPill.textContent = '! Kein API-Key';
             keyStatusPill.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40';
+          }
+        }
+        if (langsmithPill && langsmithText) {
+          if (data.langsmith_active) {
+            langsmithText.textContent = `LangSmith: ${data.langchain_project || 'Aktiv'}`;
+            langsmithPill.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 flex items-center gap-1';
+          } else {
+            langsmithText.textContent = 'LangSmith: Inaktiv';
+            langsmithPill.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-slate-800 text-slate-500 border border-white/10 flex items-center gap-1';
           }
         }
       }

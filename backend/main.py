@@ -46,7 +46,9 @@ async def health_check():
         "status": "online",
         "has_api_key": has_key,
         "masked_key": masked_key,
-        "default_model": settings.DEFAULT_MODEL
+        "default_model": settings.DEFAULT_MODEL,
+        "langsmith_active": getattr(settings, "LANGCHAIN_TRACING_V2", False),
+        "langchain_project": getattr(settings, "LANGCHAIN_PROJECT", "antigravity-graph")
     }
 
 @app.post("/api/agent/key")

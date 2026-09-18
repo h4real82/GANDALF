@@ -7,6 +7,17 @@ from typing import Any, Dict, List, Optional, TypedDict
 
 from langgraph.graph import END, StateGraph
 
+# LangSmith Tracing integration
+try:
+    from langsmith import traceable
+except ImportError:
+    def traceable(name=None, run_type="chain", **kwargs):
+        def decorator(f):
+            return f
+        if callable(name):
+            return name
+        return decorator
+
 try:
     from .config import settings
 except ImportError:
@@ -64,6 +75,39 @@ def test_basic_execution():
 
     return solution_code, test_code
 
+@traceable(name="gemini_code_generation", run_type="llm")
+def call_gemini_models(
+    client: Any,
+    candidate_models: List[str],
+    prompt: str,
+    system_instruction: str,
+    types: Any
+) -> tuple[str, str]:
+    """Generates code with Gemini, trying candidate models in order with automatic fallback."""
+    last_err = None
+    for cand in candidate_models:
+        try:
+            response = client.models.generate_content(
+                model=cand,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.2
+                )
+            )
+            return response.text or "", cand
+        except Exception as e:
+            last_err = e
+            err_str = str(e)
+            if any(code in err_str for code in ("503", "UNAVAILABLE", "429", "404")):
+                continue
+            raise
+    if last_err:
+        raise last_err
+    raise RuntimeError("Kein Gemini-Modell konnte erfolgreich antworten.")
+
+
+@traceable(name="coder_node", run_type="chain")
 def coder_node(state: AgentState) -> Dict[str, Any]:
     """Uses Gemini 2.5 Pro to write or fix code and unit tests."""
     iterations = state.get("iterations", 0) + 1
@@ -93,6 +137,21 @@ def coder_node(state: AgentState) -> Dict[str, Any]:
         from google.genai import types
 
         client = genai.Client(api_key=api_key)
+        try:
+            from langsmith import wrappers
+            if hasattr(wrappers, "wrap_gemini"):
+                client = wrappers.wrap_gemini(
+                    client,
+                    tracing_extra={
+                        "tags": ["gemini", "gandalf", "coder"],
+                        "metadata": {
+                            "integration": "google-genai",
+                            "component": "gandalf-coder"
+                        }
+                    }
+                )
+        except Exception:
+            pass
 
         system_instruction = (
             "Du bist ein Elite-Softwareentwickler und KI-Assistent für das GANDALF HUD System.\n"
@@ -134,45 +193,25 @@ def coder_node(state: AgentState) -> Dict[str, Any]:
         warnings.filterwarnings("ignore", message=".*automatic function calling.*")
 
         candidate_models = [model_name]
-        for fallback in ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-flash-latest"]:
+        for fallback in ["gemini-3.7-flash", "gemini-3-flash-preview", "gemini-3.8-flash", "gemini-3.6-flash", "gemini-flash-latest", "gemini-flash-lite-latest"]:
             if fallback not in candidate_models:
                 candidate_models.append(fallback)
 
-        response = None
-        last_err = None
-        used_model = model_name
+        raw_text, used_model = call_gemini_models(
+            client=client,
+            candidate_models=candidate_models,
+            prompt=prompt,
+            system_instruction=system_instruction,
+            types=types
+        )
 
-        for cand in candidate_models:
-            try:
-                response = client.models.generate_content(
-                    model=cand,
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_instruction,
-                        temperature=0.2
-                    )
-                )
-                used_model = cand
-                if cand != model_name:
-                    logs.append({
-                        "step": "coder",
-                        "iteration": iterations,
-                        "type": "info",
-                        "message": f"Modell '{model_name}' überlastet/nicht verfügbar. Automatisch auf '{cand}' ausgewichen."
-                    })
-                break
-            except Exception as e:
-                last_err = e
-                err_str = str(e)
-                if "503" in err_str or "UNAVAILABLE" in err_str or "429" in err_str or "404" in err_str:
-                    continue
-                else:
-                    raise
-
-        if response is None:
-            raise last_err
-
-        raw_text = response.text or ""
+        if used_model != model_name:
+            logs.append({
+                "step": "coder",
+                "iteration": iterations,
+                "type": "info",
+                "message": f"Modell '{model_name}' überlastet/nicht verfügbar. Automatisch auf '{used_model}' ausgewichen."
+            })
 
         sol_code, test_code = extract_code_blocks(raw_text)
 
@@ -208,6 +247,23 @@ def coder_node(state: AgentState) -> Dict[str, Any]:
             "logs": logs
         }
 
+@traceable(name="pytest_sandbox_execution", run_type="tool")
+def execute_pytest_sandbox(test_path: Path, run_dir: Path, timeout: int = 25) -> tuple[bool, str]:
+    """Runs pytest in the isolated workspace sandbox directory."""
+    proc = subprocess.run(
+        [sys.executable, "-m", "pytest", "-v", "--tb=short", str(test_path)],
+        cwd=str(run_dir),
+        capture_output=True,
+        text=True,
+        timeout=timeout
+    )
+    output = proc.stdout
+    if proc.stderr:
+        output += "\n" + proc.stderr
+    return proc.returncode == 0, output
+
+
+@traceable(name="tester_node", run_type="chain")
 def tester_node(state: AgentState) -> Dict[str, Any]:
     """Writes files to sandbox and executes pytest."""
     iterations = state.get("iterations", 1)
@@ -234,19 +290,7 @@ def tester_node(state: AgentState) -> Dict[str, Any]:
     })
 
     try:
-        proc = subprocess.run(
-            [sys.executable, "-m", "pytest", "-v", "--tb=short", str(test_path)],
-            cwd=str(run_dir),
-            capture_output=True,
-            text=True,
-            timeout=25
-        )
-
-        output = proc.stdout
-        if proc.stderr:
-            output += "\n" + proc.stderr
-
-        is_success = proc.returncode == 0
+        is_success, output = execute_pytest_sandbox(test_path, run_dir)
 
         logs.append({
             "step": "tester",

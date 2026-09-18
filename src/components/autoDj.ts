@@ -20,11 +20,11 @@ export class AutoDJ {
   private demoSeconds: number = 0;
 
   private demoPlaylist: DemoTrack[] = [
-    { name: 'Berlin_Calling_Peaktime_148BPM.mp3', bpm: 148, approxSec: 372 },
-    { name: 'Sisyphos_Wintergarten_Delirium.mp3', bpm: 126, approxSec: 420 },
-    { name: 'Kreuzberg_Späti_Acid_Overdrive.mp3', bpm: 152, approxSec: 310 },
-    { name: 'Berghain_Klubnacht_Strobe_Drop.mp3', bpm: 144, approxSec: 490 },
-    { name: 'Pfeffi_Express_Afterhour_Echo.mp3', bpm: 138, approxSec: 290 }
+    { name: 'mix.mp3', bpm: 148, approxSec: 270 },
+    { name: 'annuschka.mp3', bpm: 130, approxSec: 180 },
+    { name: 'musica_1.mp3', bpm: 140, approxSec: 210 },
+    { name: 'alles-wird-aus-hack-gemacht-mastered-version-mp3cut.mp3', bpm: 144, approxSec: 15 },
+    { name: 'rick-astley-never-gonna-give-you-up-youtube-00_00_00-00_00_17.mp3', bpm: 128, approxSec: 18 }
   ];
 
   // DOM Elements
@@ -310,6 +310,14 @@ export class AutoDJ {
     if (this.djTrackTitle) this.djTrackTitle.textContent = item.name;
     if (this.djTrackBpm) this.djTrackBpm.textContent = `${item.bpm} BPM`;
     this.demoSeconds = 0;
+
+    audioEngine.mainAudio.src = `/sounds/${item.name}`;
+    audioEngine.mainAudio.play().then(() => {
+      this.setPlayState(true);
+      this.appendLog('TRACK_PLAYING', `Original Google Drive Track: "${item.name}"`, 'text-emerald-400');
+    }).catch(() => {
+      this.startDemoSynthLoop();
+    });
 
     clearInterval(this.demoTimer);
     this.demoTimer = setInterval(() => {

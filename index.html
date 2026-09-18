@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>G.A.N.D.A.L.F. — Auto-DJ &amp; Delirium Party-Deck</title>
+  <title>G.A.N.D.A.L.F. // Master Sound Deck &amp; 3D Spatial Hologram</title>
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
@@ -15,22 +15,24 @@
       theme: {
         extend: {
           colors: {
-            "primary": "#6366f1",
-            "primary-container": "#818cf8",
-            "tertiary": "#7c3aed",
-            "tertiary-container": "#a78bfa",
-            "surface": "#0c101d",
-            "surface-container": "#13192c",
-            "surface-container-high": "#1b233d",
-            "surface-container-highest": "#232e4e",
-            "aurora-cyan": "#06b6d4",
-            "aurora-rose": "#f43f5e",
-            "aurora-mint": "#10b981",
-            "aurora-amber": "#f59e0b"
+            "primary": "#00f0ff",
+            "primary-container": "#00f0ff",
+            "secondary": "#7bd0ff",
+            "tertiary": "#ffb95f",
+            "surface": "#070c14",
+            "surface-container": "#0d1624",
+            "surface-container-high": "#142136",
+            "surface-container-highest": "#1c2e4a",
+            "neon-cyan": "#00f0ff",
+            "neon-peach": "#ffb95f",
+            "neon-rose": "#f43f5e",
+            "neon-lime": "#10b981",
+            "neon-indigo": "#6366f1"
           },
           fontFamily: {
             "sans": ["Plus Jakarta Sans", "sans-serif"],
-            "mono": ["JetBrains Mono", "monospace"]
+            "mono": ["JetBrains Mono", "monospace"],
+            "display": ["Space Grotesk", "sans-serif"]
           }
         }
       }
@@ -38,18 +40,22 @@
   </script>
   <link rel="stylesheet" href="/src/styles/silk-aurora.css">
 </head>
-<body class="aurora-mesh-bg text-slate-100 font-sans min-h-screen select-none overflow-x-hidden transition-colors duration-500 flex flex-col justify-between" id="main-silk-body">
-  <!-- HIDDEN HTML5 MASTER AUDIO ELEMENT -->
+<body class="aurora-mesh-bg text-slate-100 font-sans min-h-screen select-none overflow-x-hidden flex flex-col justify-between" id="rave-main-body">
+  <!-- HIDDEN HTML5 AUDIO ELEMENTS -->
   <audio id="main-audio-player" preload="auto"></audio>
   <audio id="soundboard-audio-player" preload="auto"></audio>
+
+  <!-- SCREEN STROBE FLASH & SHOCKWAVE OVERLAYS -->
+  <div class="fixed inset-0 bg-white pointer-events-none z-[120] opacity-0 transition-opacity duration-75" id="turbo-strobe-overlay"></div>
+  <div class="fixed inset-0 pointer-events-none z-[110] crt-scanlines opacity-0 transition-opacity duration-300" id="crt-overlay"></div>
 
   <!-- AUDIO UNLOCK BANNER -->
   <div class="hidden fixed top-3 inset-x-4 max-w-2xl mx-auto z-[200] p-3 rounded-2xl bg-gradient-to-r from-violet-900/95 to-pink-900/95 border-2 border-pink-400/80 shadow-[0_0_40px_rgba(244,63,94,0.7)] backdrop-blur-xl flex items-center justify-between gap-3" id="audio-unlock-banner">
     <div class="flex items-center gap-3">
       <span class="material-symbols-outlined text-pink-400 text-2xl animate-bounce">volume_up</span>
       <div>
-        <div class="text-xs font-bold text-white uppercase tracking-wider">Browser-Sound Freischalten</div>
-        <div class="text-[11px] text-pink-200">Klicke hier, um MP3-Sound und Bass-Engine zu aktivieren!</div>
+        <div class="text-xs font-bold text-white uppercase tracking-wider">Browser-Audio Freischalten</div>
+        <div class="text-[11px] text-pink-200">Klicke hier, um alle 49 Google Drive Soundfiles &amp; Bass-Synths zu aktivieren!</div>
       </div>
     </div>
     <button class="px-4 py-1.5 rounded-xl bg-pink-500 hover:bg-pink-400 text-white font-mono text-xs font-bold shadow-[0_0_15px_#f43f5e] transition-all cursor-pointer" id="btn-unlock-audio">
@@ -57,107 +63,562 @@
     </button>
   </div>
 
-  <!-- ZEN-PATRON SPATIAL HOLOGRAM MODAL -->
-  <div id="zen-holo-modal" class="hidden fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-xl p-4">
-    <div class="silk-glass rounded-2xl border-2 border-violet-500/50 max-w-lg w-full p-6 flex flex-col items-center text-center relative shadow-[0_0_50px_rgba(124,58,237,0.7)]">
-      <button id="btn-close-zen-holo" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-mono cursor-pointer">✕</button>
-      <div class="relative my-4">
-        <div class="absolute -inset-4 rounded-full border border-violet-400/40 animate-lotus-ripple pointer-events-none"></div>
-        <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-white/80 shadow-[0_0_30px_rgba(217,70,239,0.7)]">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI537-Il3vHbz13QbAIdX9-cVf5GD6vd4oeGPQB6u3-Ax_TXJvXreHTsATp8U4tl6yZ-K3hfrU5tSw8NpDGFXDMinN2MzlOatWikVuo0n3EccPRZMPwWoNogexzohew6sr0VyiLwdO2GM85LVb5FpfoIKn9rB-bDsFavHnwIeN2JnMQKmoGpPAHYx7i4j7Qpd1_fuWP3QVM7HbhDWmKQYQEAaA7JIEGh146awy1i0438vioUQLQTcLFH_R4yCkkQgBDHs" alt="Zen Patron Holo" class="w-full h-full object-cover filter saturate-125">
-        </div>
+  <!-- AUTO-DROP TOAST -->
+  <div class="fixed top-20 right-6 z-[130] pointer-events-none transform translate-y-[-20px] opacity-0 transition-all duration-300" id="auto-drop-toast">
+    <div class="hud-glass px-4 py-3 rounded-2xl border border-pink-500/50 shadow-[0_0_30px_rgba(244,63,94,0.6)] flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-rose-600 flex items-center justify-center text-white animate-bounce">
+        <span class="material-symbols-outlined text-[18px]">campaign</span>
       </div>
-      <h3 class="text-xl font-bold text-white tracking-wider bg-gradient-to-r from-violet-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent">ZEN-PATRON SPATIAL HOLOGRAM</h3>
-      <p class="text-xs text-pink-200 font-mono mt-1">»Erleuchtung durch radikale Bass-Meditation und Späti-Segen«</p>
-      <div class="grid grid-cols-2 gap-3 w-full mt-5">
-        <button id="holo-act-bass" class="px-3 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-mono text-xs font-bold transition-all shadow-[0_0_15px_rgba(124,58,237,0.5)] cursor-pointer flex items-center justify-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">volume_up</span><span>BASSBOOST 150 BPM</span>
-        </button>
-        <button id="holo-act-pfeffi" class="px-3 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-mono text-xs font-bold transition-all shadow-[0_0_15px_rgba(244,63,94,0.5)] cursor-pointer flex items-center justify-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">local_bar</span><span>PFEFFI-INJEKTION</span>
-        </button>
-        <button id="holo-act-spaeti" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-mono text-xs font-bold transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer flex items-center justify-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">storefront</span><span>SPÄTI-ALARM</span>
-        </button>
-        <button id="holo-act-fog" class="px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-mono text-xs font-bold transition-all shadow-[0_0_15px_rgba(6,182,212,0.5)] cursor-pointer flex items-center justify-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">air</span><span>NEBELMASCHINE MAX</span>
-        </button>
+      <div>
+        <div class="text-[10px] font-mono font-bold text-pink-300 uppercase tracking-widest" id="toast-tag">SMART AUTO-DROP</div>
+        <div class="text-xs font-extrabold text-white" id="toast-msg">»Abfahrt!«</div>
       </div>
     </div>
   </div>
 
-  <!-- DECK HUB MODAL -->
-  <div id="deck-hub-modal" class="hidden fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-xl p-4">
-    <div class="silk-glass rounded-2xl border-2 border-cyan-500/50 max-w-2xl w-full p-6 flex flex-col gap-4 relative shadow-[0_0_50px_rgba(6,182,212,0.5)]">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+  <!-- ========================================================================= -->
+  <!-- TOP J.A.R.V.I.S. CYBER HUD HEADER & VIEW SWITCHER                         -->
+  <!-- ========================================================================= -->
+  <header class="h-16 hud-glass px-3 lg:px-6 flex items-center justify-between sticky top-0 z-50 border-b border-cyan-500/30">
+    <div class="flex items-center gap-3">
+      <!-- Master Avatar / Emblem Trigger -->
+      <div class="relative group cursor-pointer" id="header-avatar-btn" title="G.A.N.D.A.L.F. Schutzpatron: Klicken für Zen-Erleuchtung">
+        <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-400 via-pink-500 to-amber-400 opacity-70 blur-sm group-hover:opacity-100 transition-opacity animate-halo-spin"></div>
+        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-cyan-400/80 shadow-[0_0_15px_rgba(0,240,255,0.6)]">
+          <img alt="Zen-Patron" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4ICZthpm2NZwgbJNi6o9tQjY9XaCtqtAU6mweEJXgfHasCgfDNN7B9ivWwqh5MZYQhgLuzj5qMfc7XQnlV-RpA2yD7oi_L5gj_Y_ije30lrW8XOGR3zofckAHzI-G98eRB-R-fUvaCAgUjwUnWcn1UYZQuQRkYC8D4XfrMsVQsE4F3rbGDCBpRaCUtwCB_98ddtwafoYAJsAnsI1MdXuO3yDt8q_IItdAY2CrRyNYQph3DY3sUhdLayd0dBeZpSbHFJA">
+        </div>
+      </div>
+
+      <!-- Title & Version -->
+      <div class="flex flex-col">
         <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-cyan-400 text-2xl">apps</span>
-          <h3 class="text-lg font-extrabold text-white tracking-wide">G.A.N.D.A.L.F. DECK HUB</h3>
+          <span class="text-base font-black tracking-wider bg-gradient-to-r from-white via-cyan-200 to-indigo-200 bg-clip-text text-transparent font-display">G.A.N.D.A.L.F.</span>
+          <span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_10px_rgba(0,240,255,0.2)]">CYBER-DECK v6.0</span>
         </div>
-        <button id="btn-close-deck-hub" class="text-slate-400 hover:text-white font-mono text-sm cursor-pointer">✕</button>
-      </div>
-      <p class="text-xs text-slate-300">Wähle ein Modul oder triggere eine Party-Aktion für den Dancefloor:</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div id="deck-card-autodj" class="silk-glass-card rounded-xl p-3.5 flex flex-col gap-1 cursor-pointer border border-white/10 hover:border-emerald-400/60">
-          <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
-            <span class="material-symbols-outlined text-base">queue_music</span><span>AUTO-DJ &amp; MP3 DECK</span>
-          </div>
-          <p class="text-[11px] text-slate-400">Original MP3s laden, Ordner streamen &amp; DJ Scrubber steuern.</p>
-        </div>
-        <div id="deck-card-soundboard" class="silk-glass-card rounded-xl p-3.5 flex flex-col gap-1 cursor-pointer border border-white/10 hover:border-pink-400/60">
-          <div class="flex items-center gap-2 text-pink-400 font-bold text-sm">
-            <span class="material-symbols-outlined text-base">grid_view</span><span>SILK SOUNDBOARD MATRIX</span>
-          </div>
-          <p class="text-[11px] text-slate-400">52 Party-Zitate, Hotkeys [1-9] &amp; Sprach-Synthesizer.</p>
-        </div>
-        <div id="deck-card-zen" class="silk-glass-card rounded-xl p-3.5 flex flex-col gap-1 cursor-pointer border border-white/10 hover:border-violet-400/60">
-          <div class="flex items-center gap-2 text-violet-400 font-bold text-sm">
-            <span class="material-symbols-outlined text-base">self_improvement</span><span>ZEN-PATRON SPATIAL HOLOGRAM</span>
-          </div>
-          <p class="text-[11px] text-slate-400">Buddha-Erleuchtung, Lotus-Ripples &amp; Audio-Glitch.</p>
-        </div>
-        <div id="deck-card-spaeti" class="silk-glass-card rounded-xl p-3.5 flex flex-col gap-1 cursor-pointer border border-white/10 hover:border-amber-400/60">
-          <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
-            <span class="material-symbols-outlined text-base">radar</span><span>DELIRIUM &amp; SPÄTI-RADAR</span>
-          </div>
-          <p class="text-[11px] text-slate-400">Späti-Peilung 45m Nord-Ost, Dauerpegel 2.85 ‰ &amp; Pfeffi-Reserve.</p>
+        <div class="flex items-center gap-2 text-[9px] font-mono text-slate-400">
+          <span class="text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> 49 SOUNDFILES GELADEN
+          </span>
+          <span>•</span>
+          <span class="text-pink-300">0% SPRACHSYNTHESE</span>
         </div>
       </div>
-      <div class="flex flex-wrap items-center justify-between pt-2 border-t border-white/10 text-xs font-mono">
-        <span class="text-slate-400">SCHNELLAKTIONEN:</span>
-        <div class="flex gap-2">
-          <button id="hub-quick-bass" class="px-2.5 py-1 rounded bg-violet-500/20 text-violet-300 hover:text-white border border-violet-500/40 cursor-pointer">BASSBOOST</button>
-          <button id="hub-quick-pfeffi" class="px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 hover:text-white border border-rose-500/40 cursor-pointer">PFEFFI</button>
-          <button id="hub-quick-fog" class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 hover:text-white border border-cyan-500/40 cursor-pointer">NEBEL</button>
+
+      <!-- VIEW SWITCHER TABS (DIRECT MULTI-DECK NAVIGATION) -->
+      <nav class="hidden md:flex items-center gap-1.5 ml-4 font-mono text-xs" id="main-view-switcher">
+        <button id="tab-btn-master" class="view-tab-btn active px-3 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all">
+          <span class="material-symbols-outlined text-[15px]">grid_view</span>
+          <span>[1] MASTER CONSOLE</span>
+        </button>
+        <button id="tab-btn-hologram" class="view-tab-btn px-3 py-1.5 rounded-lg hud-glass text-slate-300 border border-white/10 hover:text-white hover:border-cyan-400/50 font-bold flex items-center gap-1.5 cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-[15px] text-cyan-400">blur_on</span>
+          <span>[2] 3D SPATIAL RADAR</span>
+        </button>
+        <button id="tab-btn-mpc" class="view-tab-btn px-3 py-1.5 rounded-lg hud-glass text-slate-300 border border-white/10 hover:text-white hover:border-pink-400/50 font-bold flex items-center gap-1.5 cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-[15px] text-pink-400">apps</span>
+          <span>[3] 49-PAD MPC MATRIX</span>
+        </button>
+        <button id="tab-btn-agent" class="view-tab-btn px-3 py-1.5 rounded-lg hud-glass text-slate-300 border border-white/10 hover:text-white hover:border-violet-400/50 font-bold flex items-center gap-1.5 cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-[15px] text-violet-400">psychology</span>
+          <span>[4] AI CODE-AGENT</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- HUD TELEMETRY BADGES -->
+    <div class="hidden xl:flex items-center gap-3 text-xs font-mono">
+      <div class="flex items-center gap-2 px-3 py-1 rounded-full hud-glass border border-cyan-500/30">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="text-cyan-300 font-bold" id="header-bpm-indicator">148 BPM SYNC</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-slate-300 bg-surface-container/60 px-2.5 py-1 rounded-full border border-white/10">
+        <span class="text-slate-400">PEGEL:</span>
+        <span class="text-amber-400 font-bold">2.85 ‰ [LOCK]</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-slate-300 bg-surface-container/60 px-2.5 py-1 rounded-full border border-white/10">
+        <span class="material-symbols-outlined text-xs text-secondary">storefront</span>
+        <span class="text-slate-400">SPÄTI:</span>
+        <span class="text-secondary font-bold">42m NORD</span>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS & CLOCK -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Bassboost Button -->
+      <button class="relative px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 text-white font-mono text-xs font-bold shadow-[0_0_18px_rgba(244,63,94,0.4)] hover:shadow-[0_0_28px_rgba(244,63,94,0.8)] active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer border border-pink-400/50" id="btn-rave-combo-drop">
+        <span class="material-symbols-outlined text-[15px] animate-spin" style="animation-duration: 2.5s;">bolt</span>
+        <span class="hidden sm:inline">PEAK-TIME DROP</span>
+        <span class="sm:hidden">DROP</span>
+      </button>
+
+      <!-- Strobe Toggle -->
+      <button class="px-2.5 py-1.5 rounded-lg hud-glass text-cyan-300 hover:text-white border border-cyan-500/40 text-xs font-mono font-bold flex items-center gap-1 transition-all cursor-pointer" id="btn-rave-strobe" title="Psychedelic Strobe-Flash">
+        <span class="material-symbols-outlined text-[14px]">flash_on</span>
+        <span class="hidden sm:inline">STROBE</span>
+      </button>
+
+      <!-- Nano Clock -->
+      <div class="flex flex-col items-end font-mono pl-2 border-l border-white/10">
+        <span class="text-xs font-bold text-cyan-300 tracking-wider" id="clock-display">00:00:00.000</span>
+        <span class="text-[8px] text-slate-400 uppercase tracking-widest">BERLIN UTC</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN WORKSPACE VIEWS CONTAINER                                            -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 w-full max-w-[1920px] mx-auto p-3 lg:p-5 relative min-h-[calc(100vh-100px)]">
+
+    <!-- ======================================================================= -->
+    <!-- VIEW 1: MASTER CONSOLE (UNIFIED COCKPIT)                                -->
+    <!-- ======================================================================= -->
+    <div id="view-master" class="view-panel grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- LEFT COLUMN: Zen Hero + DSP + Auto-Drop -->
+      <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4">
+        <!-- Zen Patron Hero Card -->
+        <div class="hud-glass rounded-2xl p-4 flex flex-col items-center text-center relative overflow-hidden group border border-cyan-500/30">
+          <div class="relative my-2 cursor-pointer" id="zen-lotus-core" title="Klicken für Zen-Segnung &amp; Bass-Kick">
+            <div class="absolute -inset-4 rounded-full border border-cyan-400/40 animate-lotus-ripple pointer-events-none"></div>
+            <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-cyan-400 via-pink-500 to-amber-400 animate-halo-spin p-[2px] shadow-[0_0_25px_rgba(0,240,255,0.6)]">
+              <div class="w-full h-full bg-[#070c14] rounded-full"></div>
+            </div>
+            <div class="relative w-28 h-28 rounded-full overflow-hidden border border-white/60 shadow-[0_0_25px_rgba(0,240,255,0.5)] group-hover:scale-105 transition-transform duration-300">
+              <img alt="Zen-Patron Buddha" class="w-full h-full object-cover filter saturate-125 brightness-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI537-Il3vHbz13QbAIdX9-cVf5GD6vd4oeGPQB6u3-Ax_TXJvXreHTsATp8U4tl6yZ-K3hfrU5tSw8NpDGFXDMinN2MzlOatWikVuo0n3EccPRZMPwWoNogexzohew6sr0VyiLwdO2GM85LVb5FpfoIKn9rB-bDsFavHnwIeN2JnMQKmoGpPAHYx7i4j7Qpd1_fuWP3QVM7HbhDWmKQYQEAaA7JIEGh146awy1i0438vioUQLQTcLFH_R4yCkkQgBDHs">
+              <span class="absolute bottom-1 inset-x-0 text-[8px] font-mono font-bold tracking-widest text-cyan-300 drop-shadow">ZEN-PATRON</span>
+            </div>
+          </div>
+          <h2 class="text-base font-bold tracking-wide mt-1 bg-gradient-to-r from-white via-cyan-200 to-pink-200 bg-clip-text text-transparent font-display">G.A.N.D.A.L.F. MASTER DECK</h2>
+          <p class="text-xs text-slate-300 italic mt-0.5">»Kein Späti schließt, solange der Bass vibriert.«</p>
+          <div class="grid grid-cols-3 gap-2 w-full mt-3 pt-3 border-t border-white/10 font-mono text-center">
+            <div class="hud-glass rounded-xl p-2 flex flex-col items-center">
+              <span class="text-[9px] text-slate-400">PEGEL</span>
+              <span class="text-sm font-bold text-amber-300">2.85 ‰</span>
+            </div>
+            <div class="hud-glass rounded-xl p-2 flex flex-col items-center">
+              <span class="text-[9px] text-slate-400">TEMPO</span>
+              <span class="text-sm font-bold text-cyan-300" id="rack-bpm-display">148 BPM</span>
+            </div>
+            <div class="hud-glass rounded-xl p-2 flex flex-col items-center">
+              <span class="text-[9px] text-slate-400">SOUNDS</span>
+              <span class="text-sm font-bold text-emerald-400">49 FILES</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3x3 Performance Drumpad (Hotkeys [1] - [9]) -->
+        <div class="hud-glass rounded-2xl p-4 flex flex-col gap-2.5 border border-indigo-500/30">
+          <div class="flex items-center justify-between pb-1.5 border-b border-white/10">
+            <span class="font-display font-bold text-xs text-white tracking-wider flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+              QUICK PERFORMANCE PADS
+            </span>
+            <span class="text-[9px] font-mono text-pink-300 font-bold">[TASTEN 1-9]</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2" id="mpc-3x3-performance-pads">
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('1')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[1]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Abfahrt!</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('2')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[2]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Hack</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('3')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[3]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Alkohol!</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('4')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[4]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Nur 1 Bier</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('5')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[5]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Fresse</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('6')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[6]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Boar Geil</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('7')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[7]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Otto</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('8')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[8]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Jäger!</span>
+            </button>
+            <button class="mpc-tactile-pad p-2 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 group" onclick="window.gandalfTriggerKey('9')">
+              <span class="text-[9px] font-mono font-bold text-pink-400">[9]</span>
+              <span class="text-[10px] font-bold text-white group-hover:text-cyan-300 truncate w-full">Viecher</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Master DSP & Spectrum Bank -->
+        <div class="hud-glass rounded-2xl p-4 flex flex-col gap-3 border border-white/10">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2">
+            <span class="flex items-center gap-1.5 font-bold text-xs tracking-wider text-cyan-300 uppercase">
+              <span class="material-symbols-outlined text-[17px]">tune</span>
+              MASTER DSP &amp; SPECTRUM
+            </span>
+            <button class="px-2 py-0.5 rounded-lg bg-rose-500/20 hover:bg-rose-500 border border-rose-500/40 text-rose-300 hover:text-white transition-all text-[9px] font-mono font-bold cursor-pointer" id="btn-panic-mute">
+              PANIC MUTE
+            </button>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between font-mono text-[9px] text-slate-300">
+              <span>MASTER LAUTSTÄRKE</span>
+              <span class="text-cyan-300 font-bold" id="vol-text">85%</span>
+            </div>
+            <input class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400" id="slider-vol" max="100" min="0" type="range" value="85">
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between font-mono text-[9px] text-slate-300">
+              <span>TEMPO &amp; PITCH</span>
+              <span class="text-pink-300 font-bold" id="pitch-text">148 BPM (1.00x)</span>
+            </div>
+            <input class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-400" id="slider-pitch-ctl" max="175" min="120" type="range" value="148">
+          </div>
+          <div class="bg-black/50 rounded-xl p-2 border border-white/5 flex items-end justify-between h-12 gap-1 mt-1" id="silk-spectrum-bank"></div>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: Auto-DJ + Soundboard Matrix -->
+      <section class="lg:col-span-8 xl:col-span-9 flex flex-col gap-4">
+        <!-- Auto-DJ Deck & Waveform Scrubber -->
+        <div class="hud-glass rounded-2xl p-4 lg:p-5 border border-cyan-500/40 relative overflow-hidden" id="drop-target-box">
+          <div class="flex flex-col gap-3.5 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.4)] shrink-0">
+                  <span class="material-symbols-outlined text-white text-2xl animate-spin" id="album-spin-icon" style="animation-duration: 8s;">album</span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h2 class="text-base font-extrabold tracking-wide text-white">G.A.N.D.A.L.F. AUTO-DJ &amp; MP3 ENGINE</h2>
+                    <span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40" id="autodj-status-pill">BEREIT</span>
+                  </div>
+                  <p class="text-xs text-cyan-200 mt-0.5 italic">»Original Google Drive Soundfiles &amp; Tracks in Studio-Qualität«</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.3)] shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">folder_open</span><span>ORDNER LADEN</span>
+                  <input accept="audio/*,.mp3,.wav,.ogg,.m4a" class="hidden" directory="" id="folder-input-picker" multiple="" type="file" webkitdirectory="">
+                </label>
+                <label class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer border border-white/15 transition-all active:scale-95 shrink-0">
+                  <span class="material-symbols-outlined text-[16px]">audio_file</span><span>MP3 WÄHLEN</span>
+                  <input accept="audio/*,.mp3,.wav,.ogg,.m4a,.flac" class="hidden" id="files-direct-picker" multiple="" type="file">
+                </label>
+              </div>
+            </div>
+
+            <!-- DJ Player Controls & Timeline -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+              <div class="md:col-span-5 flex items-center gap-2">
+                <button class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-mono text-xs font-extrabold flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all active:scale-95 border border-emerald-400/40 cursor-pointer" id="btn-toggle-autodj">
+                  <span class="material-symbols-outlined text-[18px]" id="autodj-btn-icon">play_arrow</span>
+                  <span id="autodj-btn-label">AUTO-DJ STARTEN</span>
+                </button>
+                <button class="p-2.5 rounded-xl hud-glass text-cyan-300 hover:text-white transition-all cursor-pointer shrink-0" id="btn-prev-track">
+                  <span class="material-symbols-outlined text-[18px]">skip_previous</span>
+                </button>
+                <button class="p-2.5 rounded-xl hud-glass text-cyan-300 hover:text-white transition-all cursor-pointer shrink-0" id="btn-next-track">
+                  <span class="material-symbols-outlined text-[18px]">skip_next</span>
+                </button>
+              </div>
+              <div class="md:col-span-7 flex flex-col gap-1 p-2 rounded-xl bg-black/60 border border-white/10">
+                <div class="flex items-center justify-between font-mono text-[10px]">
+                  <div class="flex items-center gap-2 truncate">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"></span>
+                    <span class="text-white font-bold truncate" id="dj-track-title">mix.mp3</span>
+                  </div>
+                  <span class="text-cyan-300 font-bold shrink-0" id="dj-track-time">00:00 / 04:30</span>
+                </div>
+                <div class="relative w-full h-7 bg-black/80 rounded-lg overflow-hidden border border-white/10 cursor-pointer flex items-center group" id="dj-timeline-container">
+                  <canvas class="w-full h-full" id="dj-waveform-canvas"></canvas>
+                  <div class="absolute top-0 bottom-0 left-0 bg-cyan-400/30 border-r-2 border-cyan-400" id="dj-progress-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 49-Soundboard Matrix Section -->
+        <div class="hud-glass rounded-2xl p-4 flex flex-col gap-3 border border-white/10">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center shadow-[0_0_12px_rgba(0,240,255,0.4)]">
+                <span class="material-symbols-outlined text-white text-xl">grid_view</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h1 class="text-sm font-extrabold text-white tracking-wide">49 GOOGLE DRIVE SOUNDFILES</h1>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">ECHTES MP3 STREAMING</span>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-[10px] text-slate-400 mt-0.5">
+                  <span class="text-cyan-300">NOW PLAYING:</span>
+                  <span class="text-white font-bold truncate max-w-xs sm:max-w-md" id="now-playing-label">Bereit</span>
+                </div>
+              </div>
+            </div>
+            <!-- Search Bar -->
+            <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-white/10 focus-within:border-cyan-400 transition-all w-full sm:w-64">
+              <span class="material-symbols-outlined text-sm text-cyan-400">search</span>
+              <input class="bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none w-full font-mono" id="sound-search" placeholder="Sound suchen..." type="text">
+              <button class="text-slate-500 hover:text-white text-xs hidden cursor-pointer" id="clear-search-btn">✕</button>
+            </div>
+          </div>
+
+          <!-- Quick Hotkeys Ribbon -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-white/10 text-xs font-mono scrollbar-none">
+            <span class="text-[10px] font-bold text-slate-400 shrink-0 uppercase tracking-wider flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-pink-400">keyboard</span> HOTKEYS [1-9]:
+            </span>
+            <div class="flex items-center gap-1.5 shrink-0" id="hotkeys-ribbon"></div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="flex flex-wrap items-center gap-1.5 text-xs font-medium pt-1" id="category-pills">
+            <button class="cat-pill active px-3 py-1 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold shadow-[0_0_15px_rgba(124,58,237,0.4)] border border-violet-400/30 cursor-pointer" data-category="all">
+              ✨ ALLE SOUNDS (49)
+            </button>
+            <button class="cat-pill px-3 py-1 rounded-xl hud-glass text-slate-300 hover:text-white hover:border-pink-400/50 cursor-pointer transition-all" data-category="drops">
+              💥 Drops &amp; FX (9)
+            </button>
+            <button class="cat-pill px-3 py-1 rounded-xl hud-glass text-slate-300 hover:text-white hover:border-amber-400/50 cursor-pointer transition-all" data-category="alkohol">
+              🍻 Alkohol &amp; Party (10)
+            </button>
+            <button class="cat-pill px-3 py-1 rounded-xl hud-glass text-slate-300 hover:text-white hover:border-rose-400/50 cursor-pointer transition-all" data-category="aggro">
+              🚨 Ansagen &amp; Aggro (10)
+            </button>
+            <button class="cat-pill px-3 py-1 rounded-xl hud-glass text-slate-300 hover:text-white hover:border-cyan-400/50 cursor-pointer transition-all" data-category="memes">
+              🎭 Memes &amp; TV (11)
+            </button>
+            <button class="cat-pill px-3 py-1 rounded-xl hud-glass text-slate-300 hover:text-white hover:border-emerald-400/50 cursor-pointer transition-all" data-category="kult">
+              🧠 Kult &amp; Klassiker (9)
+            </button>
+          </div>
+
+          <!-- Soundboard Tiles Grid Container -->
+          <div class="hud-glass rounded-xl p-3 flex-1 overflow-y-auto max-h-[460px] border border-white/5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2.5" id="soundboard-tiles-container"></div>
+          </div>
+        </div>
+
+        <!-- Realtime Log Feed -->
+        <div class="hud-glass rounded-2xl p-3 flex flex-col gap-1.5 font-mono text-[10px] border border-white/10">
+          <div class="flex items-center justify-between text-slate-400 px-1 border-b border-white/5 pb-1">
+            <span class="flex items-center gap-1.5 text-cyan-300 font-semibold">
+              <span class="material-symbols-outlined text-[14px]">terminal</span>
+              LIVE AUDIO DISPATCH LOG
+            </span>
+            <div class="flex items-center gap-3">
+              <span class="text-slate-400 hidden sm:inline">LEERTASTE = CLUB-KICK • 1-9 = HOTKEYS • D = AUTO-DROP</span>
+              <button class="text-slate-400 hover:text-white transition-colors cursor-pointer" id="btn-clear-feed">[CLEAR]</button>
+            </div>
+          </div>
+          <div class="h-16 overflow-y-auto flex flex-col gap-1 p-1 bg-black/50 rounded-xl border border-white/5" id="realtime-log-feed"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- VIEW 2: 3D SPATIAL RADAR & FESTIVAL ORBIT (FROM spatial_rave_hologram)  -->
+    <!-- ======================================================================= -->
+    <div id="view-hologram" class="view-panel hidden relative w-full h-[85vh] rounded-3xl overflow-hidden hud-grid border border-cyan-500/30 p-4">
+      <!-- Background Ambient Glows -->
+      <div class="absolute inset-0 bg-radial-at-c from-cyan-950/30 via-transparent to-black pointer-events-none"></div>
+
+      <!-- CENTER MASSIVE HOLOGRAPHIC FESTIVAL RADAR -->
+      <div class="absolute pointer-events-none z-20 flex items-center justify-center left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px]">
+        <!-- Outer Holographic Compass Ring -->
+        <div class="absolute inset-0 rounded-full border border-cyan-400/30 anim-spin-slow">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-2 bg-black font-mono text-[9px] text-cyan-400 tracking-widest">N // PSY-TENT</div>
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 px-2 bg-black font-mono text-[9px] text-cyan-400 tracking-widest">S // TECHNO-BUNKER</div>
+          <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 px-1 bg-black font-mono text-[9px] text-secondary tracking-widest">W // CHILL</div>
+          <div class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 px-1 bg-black font-mono text-[9px] text-secondary tracking-widest">E // SPÄTI</div>
+        </div>
+
+        <!-- High-Speed Segmented Gyro Ring -->
+        <div class="absolute rounded-full border-2 border-dashed border-cyan-400/40 anim-spin-reverse w-[360px] h-[360px]"></div>
+
+        <!-- Targeting Radar Sweep Beam -->
+        <div class="absolute rounded-full pointer-events-none anim-sweep-beam w-[300px] h-[300px]" style="background: conic-gradient(from 0deg, rgba(0,240,255,0.25) 0deg, transparent 65deg);"></div>
+
+        <!-- Arc Reactor Core Container -->
+        <div class="arc-reactor-core pointer-events-auto cursor-pointer relative rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95 w-[240px] h-[240px] shadow-[0_0_50px_rgba(0,240,255,0.4)]" style="background: radial-gradient(circle, #081a28 0%, #03080e 80%); border: 2px solid rgba(0, 240, 255, 0.7);" title="Klicken für fetten Techno-Kick!">
+          <canvas class="quantum-core-canvas absolute inset-0 rounded-full z-10" width="240" height="240"></canvas>
+          <div class="relative z-20 flex flex-col items-center justify-center text-center pointer-events-none px-2">
+            <span class="material-symbols-outlined text-cyan-300 text-4xl animate-pulse glow-cyan">equalizer</span>
+            <span class="font-display font-bold text-xs text-white tracking-widest glow-cyan mt-1">MAIN STAGE</span>
+            <span class="font-mono text-[8px] text-cyan-300 tracking-wider">HOLOGRAPHIC RADAR</span>
+            <span class="font-mono text-[9px] text-secondary mt-0.5">148 BPM // LOCKED</span>
+          </div>
+          <div class="shockwave-layer absolute inset-0 pointer-events-none"></div>
+        </div>
+      </div>
+
+      <!-- NODE 1: TOP-LEFT SUBWOOFER HARMONICS -->
+      <div class="corner-bracket hud-glass absolute z-30 rounded-xl p-4 w-72 max-w-[90vw] left-4 top-4">
+        <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400 text-base">speaker</span>
+            <span class="font-mono text-xs text-cyan-300 font-bold">// SUBWOOFER ARRAY</span>
+          </div>
+          <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-500/20 text-cyan-300">140 dB</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+          <div class="bg-black/40 p-2 rounded">
+            <span class="text-[8px] text-slate-400 block">TEMPERATUR</span>
+            <span class="text-amber-400 font-bold text-xs">54°C GLÜHEND</span>
+          </div>
+          <div class="bg-black/40 p-2 rounded">
+            <span class="text-[8px] text-slate-400 block">BASS-DRUCK</span>
+            <span class="text-cyan-300 font-bold text-xs">140 dB PEAK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NODE 2: BOTTOM-LEFT ACID-303 OSCILLOSCOPE -->
+      <div class="corner-bracket hud-glass absolute z-30 rounded-xl p-4 w-80 max-w-[90vw] left-4 bottom-4">
+        <div class="flex items-center justify-between border-b border-white/10 pb-1.5 mb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary text-base">graphic_eq</span>
+            <span class="font-mono text-xs text-cyan-300 font-bold">// ACID-303 OSCILLOSCOPE</span>
+          </div>
+          <span class="text-[9px] font-mono text-cyan-300">148 BPM SYNC</span>
+        </div>
+        <div class="relative w-full h-16 bg-black/60 rounded border border-cyan-500/20 overflow-hidden mb-2">
+          <canvas class="w-full h-full" id="oscilloscope-canvas" width="300" height="64"></canvas>
+        </div>
+        <div class="flex flex-col gap-1.5 text-xs font-mono">
+          <div>
+            <div class="flex justify-between text-[9px] text-slate-400">
+              <span>CUTOFF:</span><span class="text-cyan-300 font-bold" id="val-cutoff">1.84 kHz</span>
+            </div>
+            <input class="w-full h-1 bg-slate-800 rounded appearance-none cursor-pointer accent-cyan-400" id="slider-cutoff" max="5000" min="200" type="range" value="1840">
+          </div>
+          <div>
+            <div class="flex justify-between text-[9px] text-slate-400">
+              <span>RESONANZ:</span><span class="text-amber-400 font-bold" id="val-resonance">82%</span>
+            </div>
+            <input class="w-full h-1 bg-slate-800 rounded appearance-none cursor-pointer accent-amber-400" id="slider-resonance" max="100" min="10" type="range" value="82">
+          </div>
+        </div>
+      </div>
+
+      <!-- NODE 3: TOP-RIGHT RAVE PROTOKOLLE & NOTFALL-KIT -->
+      <div class="corner-bracket hud-glass absolute z-30 rounded-xl p-4 w-80 max-w-[90vw] right-4 top-4">
+        <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-pink-400 text-base">emergency</span>
+            <span class="font-mono text-xs text-pink-300 font-bold">// RAVE PROTOKOLLE</span>
+          </div>
+          <span class="font-mono text-[9px] text-amber-300">BEREIT</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+          <button class="rave-protocol-btn p-2 rounded bg-black/40 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-400 transition-all flex flex-col items-start gap-1 group text-left cursor-pointer" data-action="SPAETI_RADAR">
+            <span class="material-symbols-outlined text-cyan-400 text-base group-hover:scale-110 transition-transform">storefront</span>
+            <span class="font-bold text-white group-hover:text-cyan-300">SPÄTI-RADAR</span>
+            <span class="text-[8px] text-cyan-300">GEPEILT 42m</span>
+          </button>
+          <button class="rave-protocol-btn p-2 rounded bg-black/40 hover:bg-pink-500/20 border border-white/10 hover:border-pink-400 transition-all flex flex-col items-start gap-1 group text-left cursor-pointer" data-action="PFEFFI_SHOT">
+            <span class="material-symbols-outlined text-pink-400 text-base group-hover:scale-110 transition-transform">local_bar</span>
+            <span class="font-bold text-white group-hover:text-pink-300">PFEFFI-SHOT</span>
+            <span class="text-[8px] text-pink-300">100% GELADEN</span>
+          </button>
+          <button class="rave-protocol-btn p-2 rounded bg-black/40 hover:bg-amber-500/20 border border-white/10 hover:border-amber-400 transition-all flex flex-col items-start gap-1 group text-left cursor-pointer" data-action="SUNGLASSES">
+            <span class="material-symbols-outlined text-amber-400 text-base group-hover:scale-110 transition-transform">wb_sunny</span>
+            <span class="font-bold text-white group-hover:text-amber-300">SONNENBRILLE</span>
+            <span class="text-[8px] text-amber-300">UV-MAX DÄMPFUNG</span>
+          </button>
+          <button class="rave-protocol-btn p-2 rounded bg-black/40 hover:bg-emerald-500/20 border border-white/10 hover:border-emerald-400 transition-all flex flex-col items-start gap-1 group text-left cursor-pointer" data-action="KATER_PROPHYLAXE">
+            <span class="material-symbols-outlined text-emerald-400 text-base group-hover:scale-110 transition-transform">medication</span>
+            <span class="font-bold text-white group-hover:text-emerald-300">KATER-STOPP</span>
+            <span class="text-[8px] text-emerald-300">ELEKTROLYTE ON</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NODE 4: BOTTOM-RIGHT VOICE & AI TERMINAL -->
+      <div class="corner-bracket hud-glass absolute z-30 rounded-xl p-4 w-96 max-w-[92vw] right-4 bottom-4">
+        <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400 text-base">forum</span>
+            <span class="font-mono text-xs text-cyan-300 font-bold">// G.A.N.D.A.L.F. SYNTHESIS</span>
+          </div>
+          <span class="font-mono text-[9px] text-emerald-400">STANDBY // READY</span>
+        </div>
+        <div class="bg-black/60 p-2.5 rounded border border-white/10 font-mono text-xs text-slate-200 mb-2 leading-relaxed min-h-[44px]">
+          »Die Festival-Matrix ist auf 148 BPM synchronisiert. Der Bass massiert deine inneren Organe und alle 49 Soundfiles stehen bereit!«
+        </div>
+        <div class="flex items-center gap-2">
+          <input class="bg-black/70 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 font-mono focus:border-cyan-400 focus:outline-none w-full" id="holo-cmd-input" placeholder="Befehl eingeben (z.B. 'Späti', 'Bass', 'Pfeffi')..." type="text">
+          <button class="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-black font-mono text-xs font-bold rounded-lg transition-all cursor-pointer shrink-0" id="holo-send-btn">
+            RAVE
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- AI AGENT MATRIX MODAL (LANGGRAPH + GEMINI 2.5 PRO) -->
-  <div id="ai-agent-modal" class="hidden fixed inset-0 z-[160] flex items-center justify-center bg-black/85 backdrop-blur-2xl p-3 sm:p-5">
-    <div class="silk-glass rounded-2xl border-2 border-pink-500/50 max-w-5xl w-full max-h-[92vh] flex flex-col gap-3.5 p-4 sm:p-6 relative shadow-[0_0_60px_rgba(244,63,94,0.4)] overflow-hidden">
-      <!-- Modal Top Bar -->
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+    <!-- ======================================================================= -->
+    <!-- VIEW 3: 49-PAD TACTILE MPC MATRIX (FROM tactile_studio_mpc)             -->
+    <!-- ======================================================================= -->
+    <div id="view-mpc" class="view-panel hidden flex flex-col gap-4">
+      <div class="hud-glass rounded-2xl p-4 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 via-pink-600 to-violet-600 flex items-center justify-center shadow-[0_0_15px_#f43f5e]">
-            <span class="material-symbols-outlined text-white text-xl animate-pulse">psychology</span>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(244,63,94,0.4)]">
+            <span class="material-symbols-outlined text-white text-2xl">apps</span>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h2 class="text-base sm:text-lg font-extrabold text-white tracking-wide">G.A.N.D.A.L.F. TDD CODE-AGENT</h2>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-gradient-to-r from-pink-500/20 to-violet-500/20 text-pink-300 border border-pink-500/40">GEMINI 2.5 PRO</span>
+              <h2 class="text-base font-extrabold text-white font-display">TACTILE MPC 49 MATRIX</h2>
+              <span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-pink-500/20 text-pink-300 border border-pink-500/40">BERLIN STUDIO DECK</span>
             </div>
-            <p class="text-[11px] text-slate-400 font-mono">Autonomer Coder -> Tester (Pytest) -> Router Selbstkorrektur-Loop</p>
+            <p class="text-xs text-slate-300 font-mono mt-0.5">Alle 49 Sounds vom Google Drive mit 0ms Latenz und fühlbarem Kick!</p>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <span id="agent-key-status" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-slate-400 border border-white/10">Prüfe Key...</span>
-          <button id="btn-close-ai-agent" class="text-slate-400 hover:text-white font-mono text-base px-2 py-1 cursor-pointer">✕</button>
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <span class="text-slate-400">HOTKEYS [1-9] IM RAVE-SET:</span>
+          <div class="flex items-center gap-1" id="mpc-hotkeys-ribbon"></div>
         </div>
       </div>
 
-      <!-- Quick Settings & API Key Bar -->
+      <!-- 49-Pad Illuminated Neon Grid -->
+      <div class="hud-glass rounded-2xl p-4 border border-white/10">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-2.5" id="mpc-matrix-grid"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- VIEW 4: AI CODE-AGENT MATRIX (GEMINI 2.5 PRO & PYTEST RUNNER)           -->
+    <!-- ======================================================================= -->
+    <div id="view-agent" class="view-panel hidden hud-glass rounded-2xl p-4 sm:p-6 border border-pink-500/40 flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-pink-600 to-violet-600 flex items-center justify-center shadow-[0_0_15px_#f43f5e]">
+            <span class="material-symbols-outlined text-white text-2xl animate-pulse">psychology</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-base sm:text-lg font-extrabold text-white tracking-wide font-display">G.A.N.D.A.L.F. TDD CODE-AGENT</h2>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-pink-500/20 text-pink-300 border border-pink-500/40">GEMINI 2.5 PRO</span>
+            </div>
+            <p class="text-xs text-slate-400 font-mono">Autonomer Coder -> Tester (Pytest) -> Router Selbstkorrektur-Loop</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="agent-langsmith-status" class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[13px]">insights</span>
+            <span id="agent-langsmith-text">LangSmith: antigravity-graph</span>
+          </span>
+          <span id="agent-key-status" class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-slate-800 text-slate-400 border border-white/10">Prüfe Key...</span>
+        </div>
+      </div>
+
+      <!-- Settings & Key -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-2 text-xs font-mono bg-black/40 p-2.5 rounded-xl border border-white/5">
         <div class="md:col-span-4 flex items-center gap-2">
           <span class="text-slate-400 text-[10px] shrink-0">MODELL:</span>
@@ -172,31 +633,28 @@
             <option value="2">2 Runden</option>
             <option value="3" selected>3 Runden</option>
             <option value="4">4 Runden</option>
-            <option value="5">5 Runden</option>
           </select>
         </div>
         <div class="md:col-span-6 flex items-center gap-1.5">
           <input id="agent-api-key" type="password" placeholder="Gemini API Key eingeben (falls nicht in .env)..." class="flex-1 bg-slate-900 border border-white/10 rounded-lg px-2 py-1 text-slate-200 text-xs focus:border-pink-400 focus:outline-none" />
-          <button id="btn-save-key" class="px-2.5 py-1 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs cursor-pointer transition-all">SPEICHERN</button>
+          <button id="btn-save-key" class="px-3 py-1 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs cursor-pointer transition-all">SPEICHERN</button>
         </div>
       </div>
 
-      <!-- Task Input Area -->
+      <!-- Task Input -->
       <div class="flex flex-col gap-1.5">
         <div class="flex items-center justify-between">
           <label class="font-mono text-xs font-bold text-pink-300 flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-[15px]">terminal</span>
-            AUFGABE / CODE-SPEZIFIKATION:
+            <span class="material-symbols-outlined text-[15px]">terminal</span> AUFGABE / CODE-SPEZIFIKATION:
           </label>
           <div class="flex items-center gap-2">
             <span class="text-[10px] font-mono text-slate-400">BEISPIELE:</span>
-            <button class="agent-sample-chip text-[9px] font-mono px-2 py-0.5 rounded bg-white/5 hover:bg-pink-500/20 text-slate-300 hover:text-pink-300 border border-white/10 cursor-pointer transition-all" data-prompt="Implementiere eine Audio-BPM-Analysefunktion mit Peak-Autokorrelation und schreibe robuste Tests dafür.">BPM-Detektor</button>
-            <button class="agent-sample-chip text-[9px] font-mono px-2 py-0.5 rounded bg-white/5 hover:bg-pink-500/20 text-slate-300 hover:text-pink-300 border border-white/10 cursor-pointer transition-all" data-prompt="Erstelle ein Camelot-Wheel Harmonic-Mixing Modul: Berechne kompatible Keys (+1, -1, Relative Dur/Moll) und Energie-Sprünge (+2).">Camelot-Wheel</button>
-            <button class="agent-sample-chip text-[9px] font-mono px-2 py-0.5 rounded bg-white/5 hover:bg-pink-500/20 text-slate-300 hover:text-pink-300 border border-white/10 cursor-pointer transition-all" data-prompt="Schreibe eine Funktion get_transient_peaks(samples, threshold=0.85), die Transienten-Positionen in einem PCM Float32Array identifiziert.">Transienten-Peaks</button>
+            <button class="agent-sample-chip text-[9px] font-mono px-2 py-0.5 rounded bg-white/5 hover:bg-pink-500/20 text-slate-300 hover:text-pink-300 border border-white/10 cursor-pointer" data-prompt="Implementiere eine Audio-BPM-Analysefunktion mit Peak-Autokorrelation und schreibe robuste Tests dafür.">BPM-Detektor</button>
+            <button class="agent-sample-chip text-[9px] font-mono px-2 py-0.5 rounded bg-white/5 hover:bg-pink-500/20 text-slate-300 hover:text-pink-300 border border-white/10 cursor-pointer" data-prompt="Erstelle ein Camelot-Wheel Harmonic-Mixing Modul: Berechne kompatible Keys (+1, -1, Relative Dur/Moll) und Energie-Sprünge (+2).">Camelot-Wheel</button>
           </div>
         </div>
         <div class="flex gap-2">
-          <textarea id="agent-task-input" rows="2" placeholder="Beschreibe die Python-Funktion oder das Modul, das Gemini 2.5 Pro schreiben und per Pytest testen soll..." class="flex-1 bg-slate-950/80 border border-white/10 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 font-mono focus:border-pink-500/80 focus:outline-none resize-none"></textarea>
+          <textarea id="agent-task-input" rows="2" placeholder="Beschreibe die Python-Funktion, die Gemini 2.5 Pro schreiben und per Pytest testen soll..." class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 font-mono focus:border-pink-400 focus:outline-none resize-none"></textarea>
           <button id="btn-start-agent" class="px-5 rounded-xl bg-gradient-to-r from-pink-600 via-rose-600 to-violet-600 hover:from-pink-500 hover:to-violet-500 text-white font-mono text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-[0_0_20px_rgba(244,63,94,0.4)] cursor-pointer active:scale-95 transition-all shrink-0">
             <span class="material-symbols-outlined text-lg">play_arrow</span>
             <span>AGENT STARTEN</span>
@@ -204,27 +662,20 @@
         </div>
       </div>
 
-      <!-- Agent State & Dual Console View -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 overflow-hidden min-h-[300px]">
-        <!-- Left: Pytest Terminal & Iteration Feed (Cols 6) -->
-        <div class="lg:col-span-6 flex flex-col gap-1.5 bg-black/60 rounded-xl p-3 border border-white/10 overflow-hidden">
+      <!-- Terminal Output & Code View -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-[340px]">
+        <div class="lg:col-span-6 flex flex-col gap-1.5 bg-black/60 rounded-xl p-3 border border-white/10">
           <div class="flex items-center justify-between border-b border-white/10 pb-1.5 font-mono text-[11px]">
             <span class="text-cyan-300 font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-sm">terminal</span>
-              LIVE PYTEST TERMINAL
+              <span class="material-symbols-outlined text-sm">terminal</span> LIVE PYTEST TERMINAL
             </span>
-            <div class="flex items-center gap-2">
-              <span id="agent-iter-display" class="text-slate-400 font-semibold">Bereit</span>
-              <span id="agent-status-pill" class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-800 text-slate-400 border border-white/10">STANDBY</span>
-            </div>
+            <span id="agent-status-pill" class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-800 text-slate-400 border border-white/10">STANDBY</span>
           </div>
           <div id="agent-terminal-output" class="flex-1 overflow-y-auto p-2 bg-slate-950/90 rounded-lg border border-white/5 flex flex-col gap-1 font-mono text-[11px] select-text">
-            <div class="text-slate-500 italic">Noch kein Agent-Lauf gestartet. Wähle eine Aufgabe oder nutze ein Beispiel oben.</div>
+            <div class="text-slate-500 italic">Bereit für Agent-Lauf.</div>
           </div>
         </div>
-
-        <!-- Right: Generated Code Viewer Tabs (Cols 6) -->
-        <div class="lg:col-span-6 flex flex-col gap-1.5 bg-black/60 rounded-xl p-3 border border-white/10 overflow-hidden">
+        <div class="lg:col-span-6 flex flex-col gap-1.5 bg-black/60 rounded-xl p-3 border border-white/10">
           <div class="flex items-center justify-between border-b border-white/10 pb-1 font-mono">
             <div class="flex items-center gap-1">
               <button id="tab-view-solution" class="px-3 py-1 rounded-t-lg bg-white/10 text-white font-bold text-xs cursor-pointer border-t border-x border-cyan-400/50">solution.py</button>
@@ -236,442 +687,31 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- OVERLAYS & TOASTS -->
-  <div class="fixed inset-0 bg-white pointer-events-none z-[120] opacity-0 transition-opacity" id="turbo-strobe-overlay"></div>
-  <div class="fixed inset-0 pointer-events-none z-[110] crt-scanlines opacity-0 transition-opacity duration-300" id="crt-overlay"></div>
-
-  <div class="fixed top-20 right-6 z-[130] pointer-events-none transform translate-y-[-20px] opacity-0 transition-all duration-300" id="auto-drop-toast">
-    <div class="silk-glass px-4 py-3 rounded-2xl border border-pink-500/50 shadow-[0_0_30px_rgba(244,63,94,0.6)] flex items-center gap-3">
-      <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-rose-600 flex items-center justify-center text-white animate-bounce">
-        <span class="material-symbols-outlined text-[18px]">campaign</span>
-      </div>
-      <div>
-        <div class="text-[10px] font-mono font-bold text-pink-300 uppercase tracking-widest" id="toast-tag">SMART AUTO-DROP INJEKTION</div>
-        <div class="text-xs font-extrabold text-white" id="toast-msg">»Bier, Bier, Bier, Bett, Bett, Bett!«</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- HEADER -->
-  <header class="h-16 silk-glass px-4 lg:px-6 flex items-center justify-between sticky top-0 z-50 border-b border-white/10">
-    <div class="flex items-center gap-3.5">
-      <div class="relative group cursor-pointer" id="header-avatar-btn" title="G.A.N.D.A.L.F. Schutzpatron: Klicken für Zen-Erleuchtung">
-        <div class="absolute -inset-1.5 rounded-full bg-gradient-to-r from-violet-600 via-pink-500 to-cyan-400 opacity-70 blur-sm group-hover:opacity-100 transition-opacity animate-halo-spin"></div>
-        <div class="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 shadow-[0_0_15px_rgba(124,58,237,0.6)]">
-          <img alt="Zen-Patron" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4ICZthpm2NZwgbJNi6o9tQjY9XaCtqtAU6mweEJXgfHasCgfDNN7B9ivWwqh5MZYQhgLuzj5qMfc7XQnlV-RpA2yD7oi_L5gj_Y_ije30lrW8XOGR3zofckAHzI-G98eRB-R-fUvaCAgUjwUnWcn1UYZQuQRkYC8D4XfrMsVQsE4F3rbGDCBpRaCUtwCB_98ddtwafoYAJsAnsI1MdXuO3yDt8q_IItdAY2CrRyNYQph3DY3sUhdLayd0dBeZpSbHFJA">
-        </div>
-      </div>
-      <div class="flex flex-col">
-        <div class="flex items-center gap-2">
-          <span class="text-base font-extrabold tracking-wider bg-gradient-to-r from-white via-indigo-100 to-cyan-200 bg-clip-text text-transparent">G.A.N.D.A.L.F.</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider bg-gradient-to-r from-violet-500/20 to-pink-500/20 text-pink-300 border border-pink-500/30 shadow-[0_0_10px_rgba(244,63,94,0.2)]">AUTO-DJ &amp; DELIRIUM DECK v5.5</span>
-        </div>
-        <span class="text-[10px] font-mono text-slate-400">ECHTER MP3 ENGINE • DIRECT FILE STREAM • GLITCH FAXXEN</span>
-      </div>
-      <nav class="hidden md:flex items-center gap-1.5 ml-4 font-mono text-xs">
-        <button id="nav-tab-autodj" class="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 hover:text-white transition-all cursor-pointer font-bold flex items-center gap-1">
-          <span class="material-symbols-outlined text-[14px]">queue_music</span><span>AUTO-DJ &amp; MP3</span>
-        </button>
-        <button id="nav-tab-soundboard" class="px-2.5 py-1 rounded-lg silk-glass text-slate-300 border border-white/10 hover:text-white hover:border-pink-400/50 transition-all cursor-pointer flex items-center gap-1">
-          <span class="material-symbols-outlined text-[14px]">grid_view</span><span>SOUNDBOARD</span>
-        </button>
-        <button id="nav-tab-zen-holo" class="px-2.5 py-1 rounded-lg silk-glass text-slate-300 border border-white/10 hover:text-white hover:border-violet-400/50 transition-all cursor-pointer flex items-center gap-1">
-          <span class="material-symbols-outlined text-[14px]">self_improvement</span><span>ZEN-PATRON HOLOGRAMM</span>
-        </button>
-        <button id="nav-tab-deck-hub" class="px-2.5 py-1 rounded-lg silk-glass text-cyan-300 border border-cyan-500/30 hover:border-cyan-400 transition-all cursor-pointer font-bold flex items-center gap-1">
-          <span class="material-symbols-outlined text-[14px]">apps</span><span>DECK HUB</span>
-        </button>
-        <button id="nav-tab-ai-agent" class="px-2.5 py-1 rounded-lg bg-pink-500/20 text-pink-300 border border-pink-500/40 hover:text-white hover:border-pink-400 transition-all cursor-pointer font-bold flex items-center gap-1 shadow-[0_0_12px_rgba(244,63,94,0.3)]">
-          <span class="material-symbols-outlined text-[14px]">psychology</span><span>AI AGENT (PRO)</span>
-        </button>
-      </nav>
-    </div>
-
-    <!-- HUD TELEMETRY BADGES -->
-    <div class="hidden xl:flex items-center gap-4 text-xs font-mono">
-      <div class="flex items-center gap-2 px-3 py-1 rounded-full silk-glass border border-white/10">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span class="text-emerald-300 font-semibold" id="header-bpm-indicator">148 BPM SYNC</span>
-      </div>
-      <div class="flex items-center gap-1.5 text-slate-300">
-        <span class="text-slate-500">AUTO-DJ:</span>
-        <span class="text-cyan-300 font-bold" id="header-autodj-indicator">STANDBY / BEREIT</span>
-      </div>
-      <div class="flex items-center gap-1.5 text-slate-300">
-        <span class="text-slate-500">AUDIO-ENGINE:</span>
-        <span class="text-emerald-400 font-bold" id="header-engine-mode">HTML5 MP3 DIRECT</span>
-      </div>
-      <div class="flex items-center gap-1.5 text-slate-300">
-        <span class="text-slate-500">POOL:</span>
-        <span class="px-1.5 py-0.5 rounded bg-violet-900/60 text-violet-300 border border-violet-500/40 font-bold" id="header-pool-count">0 MP3s GELADEN</span>
-      </div>
-    </div>
-
-    <!-- HEADER ACTIONS & CONTROLS -->
-    <div class="flex items-center gap-2 sm:gap-3">
-      <button class="relative group px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold text-white overflow-hidden transition-all duration-300 shadow-[0_0_20px_rgba(217,70,239,0.35)] hover:shadow-[0_0_30px_rgba(217,70,239,0.65)] active:scale-95 border border-pink-400/40" id="btn-rave-strobe">
-        <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-600 via-rose-500 to-amber-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
-        <div class="relative flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[15px] animate-bounce">bolt</span>
-          <span id="rave-btn-text">PSY-STROBE</span>
-        </div>
-      </button>
-
-      <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl silk-glass text-cyan-300 hover:text-white hover:border-cyan-400/50 transition-all font-mono text-xs font-medium border border-cyan-500/30 shadow-[0_0_12px_rgba(6,182,212,0.2)]" id="btn-master-loop">
-        <span class="material-symbols-outlined text-[15px]" id="loop-icon-symbol">play_arrow</span>
-        <span id="loop-btn-label">RAVE SYNTH BEAT</span>
-      </button>
-
-      <button class="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl silk-glass text-rose-300 hover:text-rose-100 border border-rose-500/30 hover:border-rose-400 transition-all font-mono text-xs cursor-pointer" id="btn-emergency-pfeffi" title="Notfall-Pfeffi triggern">
-        <span class="material-symbols-outlined text-[15px] text-rose-400">local_bar</span>
-        <span>PFEFFI</span>
-      </button>
-
-      <div class="flex flex-col items-end font-mono pl-2 border-l border-white/10">
-        <span class="text-xs font-bold text-cyan-300" id="clock-display">00:00:00.000</span>
-        <span class="text-[9px] text-slate-400">BERLIN AFTERHOUR</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN WORKSPACE -->
-  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-3 lg:p-5 max-w-[1920px] mx-auto w-full">
-    <!-- LEFT COLUMN -->
-    <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4">
-      <!-- ZEN-PATRON -->
-      <div class="silk-glass rounded-2xl p-4 flex flex-col items-center text-center relative overflow-hidden group">
-        <div class="absolute -top-12 -left-12 w-48 h-48 bg-gradient-to-br from-violet-600/30 to-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-gradient-to-tl from-cyan-500/20 to-emerald-400/20 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="relative my-2 cursor-pointer" id="zen-lotus-core" title="Klicken für Zen-Segnung &amp; Drop">
-          <div class="absolute -inset-4 rounded-full border border-violet-400/40 animate-lotus-ripple pointer-events-none"></div>
-          <div class="absolute -inset-8 rounded-full border border-pink-400/30 animate-lotus-ripple pointer-events-none" style="animation-delay: 1.2s;"></div>
-          <div class="absolute -inset-12 rounded-full border border-cyan-400/20 animate-lotus-ripple pointer-events-none" style="animation-delay: 2.4s;"></div>
-          <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-violet-600 via-rose-500 to-cyan-400 animate-halo-spin p-[2px] shadow-[0_0_30px_rgba(124,58,237,0.7)]">
-            <div class="w-full h-full bg-[#0a0d1a] rounded-full"></div>
-          </div>
-          <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-white/60 shadow-[0_0_25px_rgba(217,70,239,0.5)] group-hover:scale-105 transition-transform duration-300" id="avatar-container">
-            <img alt="Zen-Patron Buddha" class="w-full h-full object-cover filter saturate-125 brightness-105 transition-all duration-100 faxxen-active-glitch" id="zen-avatar-main" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI537-Il3vHbz13QbAIdX9-cVf5GD6vd4oeGPQB6u3-Ax_TXJvXreHTsATp8U4tl6yZ-K3hfrU5tSw8NpDGFXDMinN2MzlOatWikVuo0n3EccPRZMPwWoNogexzohew6sr0VyiLwdO2GM85LVb5FpfoIKn9rB-bDsFavHnwIeN2JnMQKmoGpPAHYx7i4j7Qpd1_fuWP3QVM7HbhDWmKQYQEAaA7JIEGh146awy1i0438vioUQLQTcLFH_R4yCkkQgBDHs">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-            <span class="absolute bottom-1 inset-x-0 text-[9px] font-mono font-bold tracking-widest text-cyan-300 drop-shadow" id="zen-avatar-badge">ZEN-PATRON</span>
-          </div>
-        </div>
-        <h2 class="text-base font-bold tracking-wide mt-2 bg-gradient-to-r from-violet-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent">G.A.N.D.A.L.F. DELIRIUM-DJ</h2>
-        <p class="text-xs text-slate-300 italic mt-0.5" id="zen-quote-text">»Es ist erst vorbei, wenn der Späti schließt.«</p>
-        <div class="grid grid-cols-3 gap-2 w-full mt-4 pt-3 border-t border-white/10 font-mono">
-          <div class="silk-glass rounded-xl p-2 flex flex-col items-center">
-            <span class="text-[9px] text-slate-400">PEGEL</span>
-            <span class="text-sm font-bold text-violet-300">2.85 ‰</span>
-          </div>
-          <div class="silk-glass rounded-xl p-2 flex flex-col items-center">
-            <span class="text-[9px] text-slate-400">TEMPO</span>
-            <span class="text-sm font-bold text-pink-300" id="rack-bpm-display">148 BPM</span>
-          </div>
-          <div class="silk-glass rounded-xl p-2 flex flex-col items-center">
-            <span class="text-[9px] text-slate-400">FAXXEN</span>
-            <span class="text-sm font-bold text-cyan-300" id="rack-faxxen-status">AKTIV</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAXXEN & GLITCH ESKALATION -->
-      <div class="silk-glass rounded-2xl p-4 flex flex-col gap-3">
-        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-          <span class="flex items-center gap-1.5 font-bold text-xs tracking-wider text-pink-400 uppercase">
-            <span class="material-symbols-outlined text-[17px]">auto_fix_high</span>
-            FAXXEN &amp; GLITCH ESKALATION
-          </span>
-          <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30">VISUAL OVERLOAD</span>
-        </div>
-        <div class="flex flex-col gap-1.5">
-          <div class="flex justify-between font-mono text-[10px] text-slate-300">
-            <span>FAXXEN-INTENSITÄT</span>
-            <span class="text-pink-300 font-bold" id="faxxen-val-display">75% (Party-Modus)</span>
-          </div>
-          <input class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-500" id="slider-faxxen" max="200" min="0" type="range" value="75">
-          <div class="flex justify-between text-[8px] font-mono text-slate-500">
-            <span>0% Chill</span>
-            <span>100% Acid Club</span>
-            <span>200% Koma-Glitch</span>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-2 mt-1">
-          <button class="px-2.5 py-1.5 rounded-xl border border-pink-500/30 bg-pink-500/10 hover:bg-pink-500/25 text-pink-300 flex items-center justify-center gap-1.5 font-mono text-[10px] font-bold transition-all cursor-pointer" id="btn-toggle-scanlines">
-            <span class="material-symbols-outlined text-[14px]">tv</span><span>CRT SCANLINES</span>
-          </button>
-          <button class="px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/25 text-cyan-300 flex items-center justify-center gap-1.5 font-mono text-[10px] font-bold transition-all cursor-pointer" id="btn-trigger-faxxen">
-            <span class="material-symbols-outlined text-[14px]">flash_on</span><span>FAXXEN BURST</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- SMARTE SOUND-INJEKTION -->
-      <div class="silk-glass rounded-2xl p-4 flex flex-col gap-3">
-        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-          <span class="flex items-center gap-1.5 font-bold text-xs tracking-wider text-amber-300 uppercase">
-            <span class="material-symbols-outlined text-[17px] text-amber-400">psychology</span>
-            SMARTE SOUND-INJEKTION
-          </span>
-          <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/40">VOICE &amp; DROP SYNC</span>
-        </div>
-        <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 flex flex-col gap-1.5 text-[10px] font-mono">
-          <div class="flex items-center justify-between">
-            <span class="text-slate-400">SOUNDBOARD-QUELLE:</span>
-            <span class="text-emerald-400 font-bold flex items-center gap-1" id="soundboard-mode-status">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              SPRACHE &amp; CLUB-SYNTH
-            </span>
-          </div>
-          <div class="flex items-center justify-between text-[9px] text-slate-400">
-            <span>FALLBACK:</span>
-            <span class="text-violet-300">Deutsche Kult-Zitate (Kein Blop!)</span>
-          </div>
-        </div>
-        <div class="flex flex-col gap-1 text-[10px] font-mono">
-          <label class="text-slate-300 font-semibold">AUTO-DROP FREQUENZ:</label>
-          <select class="w-full bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-slate-200 font-mono text-xs focus:border-amber-400 focus:outline-none cursor-pointer" id="select-drop-freq">
-            <option value="15">Extrem zappelig (Alle 15s)</option>
-            <option selected="" value="30">Peak-Time Club (Alle 30s)</option>
-            <option value="breakdown">Bei Drop / Beat-Breakdown</option>
-            <option value="delirium">Völlig unberechenbar (Delirium Mode)</option>
-            <option value="off">Deaktiviert (Nur manuelle Drops)</option>
-          </select>
-        </div>
-        <div class="p-2 rounded-xl bg-violet-950/20 border border-violet-500/20 flex flex-col gap-1 font-mono text-[9px]">
-          <span class="text-slate-400 flex items-center justify-between">
-            <span>LETZTER AUTO-DROP:</span>
-            <span class="text-pink-400 font-bold" id="last-drop-time">vor 0s</span>
-          </span>
-          <div class="text-white font-medium truncate" id="last-drop-text">»Bier, Bier, Bier, Bett, Bett, Bett!«</div>
-        </div>
-      </div>
-
-      <!-- MASTER DSP RACK -->
-      <div class="silk-glass rounded-2xl p-4 flex flex-col gap-3">
-        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-          <span class="flex items-center gap-1.5 font-bold text-xs tracking-wider text-cyan-300 uppercase">
-            <span class="material-symbols-outlined text-[17px] text-cyan-400">tune</span>
-            MASTER DSP &amp; AUDIO RACK
-          </span>
-          <button class="px-2 py-0.5 rounded-lg bg-rose-500/20 hover:bg-rose-500 border border-rose-500/40 text-rose-300 hover:text-white transition-all text-[9px] font-mono font-bold cursor-pointer" id="btn-panic-mute">
-            PANIC MUTE
-          </button>
-        </div>
-        <div class="flex flex-col gap-1">
-          <div class="flex justify-between font-mono text-[9px] text-slate-300">
-            <span>MASTER LAUTSTÄRKE (MP3 &amp; DECKS)</span>
-            <span class="text-violet-300 font-bold" id="vol-text">85%</span>
-          </div>
-          <input class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-violet-400" id="slider-vol" max="100" min="0" type="range" value="85">
-        </div>
-        <div class="flex flex-col gap-1">
-          <div class="flex justify-between font-mono text-[9px] text-slate-300">
-            <span>PITCH / GESCHWINDIGKEIT</span>
-            <span class="text-pink-300 font-bold" id="pitch-text">148 BPM (1.00x)</span>
-          </div>
-          <input class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-400" id="slider-pitch-ctl" max="175" min="120" type="range" value="148">
-        </div>
-        <div class="bg-black/40 rounded-xl p-2 border border-white/5 flex items-end justify-between h-12 gap-1 mt-1" id="silk-spectrum-bank"></div>
-      </div>
-    </aside>
-
-    <!-- RIGHT COLUMN -->
-    <section class="lg:col-span-8 xl:col-span-9 flex flex-col gap-4">
-      <!-- AUTO-DJ DECK & FILE IMPORTER -->
-      <div class="silk-glass rounded-2xl p-4 lg:p-5 border-2 border-indigo-500/40 relative overflow-hidden group shadow-[0_10px_35px_rgba(99,102,241,0.25)] transition-all" id="drop-target-box">
-        <div class="absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br from-indigo-500/20 via-pink-500/20 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-gradient-to-tr from-cyan-500/20 via-violet-500/20 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="flex flex-col gap-4 relative z-10">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-3">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600 via-pink-600 to-cyan-400 flex items-center justify-center shadow-[0_0_20px_rgba(217,70,239,0.5)] shrink-0">
-                <span class="material-symbols-outlined text-white text-2xl animate-spin" id="album-spin-icon" style="animation-duration: 8s;">album</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-2">
-                  <h2 class="text-lg font-extrabold tracking-wide text-white">G.A.N.D.A.L.F. RANDOM MIXER &amp; AUTO-DJ</h2>
-                  <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40" id="autodj-status-pill">DEMO-TRACKS AKTIV</span>
-                </div>
-                <p class="text-xs text-pink-200 mt-0.5 italic">»Wähle ganze Musik-Ordner ODER einzelne MP3-Dateien — sofort in Originalqualität abspielbar!«</p>
-              </div>
-            </div>
-            <div class="flex flex-wrap items-center gap-2">
-              <label class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(124,58,237,0.35)] transition-all active:scale-95 border border-white/20 shrink-0" title="Ganzen Musik-Ordner mit MP3s laden">
-                <span class="material-symbols-outlined text-[17px]">folder_open</span><span>ORDNER WÄHLEN</span>
-                <input accept="audio/*,.mp3,.wav,.ogg,.m4a" class="hidden" directory="" id="folder-input-picker" multiple="" type="file" webkitdirectory="">
-              </label>
-              <label class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(244,63,94,0.35)] transition-all active:scale-95 border border-white/20 shrink-0" title="Einzelne oder mehrere MP3-Dateien direkt auswählen">
-                <span class="material-symbols-outlined text-[17px]">audio_file</span><span>MP3s AUSWÄHLEN</span>
-                <input accept="audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac" class="hidden" id="files-direct-picker" multiple="" type="file">
-              </label>
-            </div>
-          </div>
-
-          <!-- Drag & Drop Notice Strip -->
-          <div class="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 font-mono text-xs" id="drag-drop-bar">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-cyan-400 text-base">file_download</span>
-              <span class="text-slate-200 font-medium" id="folder-status-text">Ziehe deine MP3s einfach hier rein oder nutze die Buttons oben!</span>
-            </div>
-            <div class="flex items-center gap-3 text-[11px]">
-              <span class="text-slate-400" id="active-file-size-info">0 MB geladen</span>
-              <span class="text-emerald-400 font-bold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30" id="pool-count-label">5 DEMO-TRACKS AKTIV</span>
-            </div>
-          </div>
-
-          <!-- DJ Controls & Progress -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-            <div class="md:col-span-5 flex items-center gap-2">
-              <button class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-mono text-xs font-extrabold flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all active:scale-95 border border-emerald-400/40 cursor-pointer" id="btn-toggle-autodj">
-                <span class="material-symbols-outlined text-[18px]" id="autodj-btn-icon">play_arrow</span>
-                <span id="autodj-btn-label">AUTO-DJ STARTEN</span>
-              </button>
-              <button class="p-2.5 rounded-xl silk-glass text-cyan-300 hover:text-white hover:border-cyan-400 transition-all cursor-pointer shrink-0" id="btn-prev-track" title="Vorheriger Track">
-                <span class="material-symbols-outlined text-[18px]">skip_previous</span>
-              </button>
-              <button class="p-2.5 rounded-xl silk-glass text-cyan-300 hover:text-white hover:border-cyan-400 transition-all cursor-pointer shrink-0" id="btn-next-track" title="Nächster Track">
-                <span class="material-symbols-outlined text-[18px]">skip_next</span>
-              </button>
-            </div>
-            <div class="md:col-span-7 flex flex-col gap-1.5 p-2.5 rounded-xl bg-slate-900/70 border border-white/10">
-              <div class="flex items-center justify-between font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate pr-2">
-                  <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" id="playing-dot"></span>
-                  <span class="text-slate-400 shrink-0">TRACK:</span>
-                  <span class="text-white font-bold truncate" id="dj-track-title">Berlin_Calling_Peaktime_148BPM.mp3</span>
-                </div>
-                <div class="flex items-center gap-2 shrink-0">
-                  <span class="text-pink-400 font-bold" id="dj-track-bpm">148 BPM</span>
-                  <span class="text-slate-300" id="dj-track-time">00:00 / 06:12</span>
-                </div>
-              </div>
-              <div class="relative w-full h-8 bg-black/60 rounded-lg overflow-hidden border border-white/10 cursor-pointer flex items-center group" id="dj-timeline-container" title="Klicken zum Vor- und Zurückspulen">
-                <canvas class="w-full h-full" id="dj-waveform-canvas"></canvas>
-                <div class="absolute top-0 bottom-0 left-0 bg-cyan-400/30 border-r-2 border-cyan-400 transition-none pointer-events-none" id="dj-progress-bar" style="width: 0%;"></div>
-                <span class="absolute right-2 text-[9px] font-mono text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Klicke zum Spulen</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- LOADED TRACKS STRIP -->
-          <div class="pt-2 border-t border-white/10 flex flex-col gap-1.5 font-mono text-[11px]">
-            <div class="flex items-center justify-between text-slate-400">
-              <span class="flex items-center gap-1.5 font-bold text-xs text-indigo-300">
-                <span class="material-symbols-outlined text-[15px]">queue_music</span>
-                TRACK-PLAYLIST IM DECK:
-              </span>
-              <span class="text-[10px] text-pink-300" id="playlist-summary-tag">Klicke einen Track zum sofortigen Abspielen</span>
-            </div>
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="tracklist-pills-row"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SOUNDBOARD DOCK -->
-      <div class="silk-glass rounded-2xl p-4 flex flex-col gap-3">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.5)]">
-              <span class="material-symbols-outlined text-white text-xl animate-pulse">grid_view</span>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h1 class="text-base font-extrabold text-white tracking-wide">SILK SOUNDBOARD MATRIX</h1>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 border border-violet-500/30">HOTKEYS [1-9] ACTIVE</span>
-              </div>
-              <div class="flex items-center gap-2 font-mono text-[10px] text-slate-400 mt-0.5">
-                <span class="text-emerald-400 flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> STREAM:
-                </span>
-                <span class="text-white font-semibold truncate max-w-xs sm:max-w-md" id="now-playing-label">Bereit für Drop</span>
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-white/10 focus-within:border-pink-400/80 transition-all w-full sm:w-72">
-            <span class="material-symbols-outlined text-sm text-pink-400">search</span>
-            <input class="bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none w-full font-mono" id="sound-search" placeholder="Sound suchen (z.B. 'otto', 'bier', 'abfahrt')..." type="text">
-            <button class="text-slate-500 hover:text-white text-xs hidden cursor-pointer" id="clear-search-btn">✕</button>
-          </div>
-        </div>
-
-        <!-- Hotkeys [1-9] Ribbon -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-white/10 text-xs font-mono scrollbar-none">
-          <span class="text-[10px] font-bold text-slate-400 shrink-0 uppercase tracking-wider flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs text-cyan-400">keyboard</span> QUICK [1-9]:
-          </span>
-          <div class="flex items-center gap-1.5 shrink-0" id="hotkeys-ribbon"></div>
-        </div>
-
-        <!-- Category Pills -->
-        <div class="flex flex-wrap items-center gap-1.5 text-xs font-medium pt-1" id="category-pills">
-          <button class="cat-pill active px-3 py-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold shadow-[0_0_15px_rgba(124,58,237,0.4)] border border-violet-400/30 cursor-pointer" data-category="all">
-            ✨ ALLE SOUNDS (52)
-          </button>
-          <button class="cat-pill px-3 py-1.5 rounded-xl silk-glass text-slate-300 hover:text-white hover:border-pink-400/50 cursor-pointer transition-all" data-category="alkohol">
-            🍻 Alkohol &amp; Rausch (11)
-          </button>
-          <button class="cat-pill px-3 py-1.5 rounded-xl silk-glass text-slate-300 hover:text-white hover:border-rose-400/50 cursor-pointer transition-all" data-category="aggro">
-            🚨 Ansagen &amp; Aggro (10)
-          </button>
-          <button class="cat-pill px-3 py-1.5 rounded-xl silk-glass text-slate-300 hover:text-white hover:border-amber-400/50 cursor-pointer transition-all" data-category="memes">
-            🎭 Memes &amp; TV Kult (12)
-          </button>
-          <button class="cat-pill px-3 py-1.5 rounded-xl silk-glass text-slate-300 hover:text-white hover:border-cyan-400/50 cursor-pointer transition-all" data-category="drops">
-            💥 Drops &amp; FX (11)
-          </button>
-          <button class="cat-pill px-3 py-1.5 rounded-xl silk-glass text-slate-300 hover:text-white hover:border-emerald-400/50 cursor-pointer transition-all" data-category="philosophie">
-            🧠 Afterhour Philosophie (8)
-          </button>
-        </div>
-      </div>
-
-      <!-- SOUNDBOARD TILES GRID -->
-      <div class="silk-glass rounded-2xl p-4 flex-1 overflow-y-auto max-h-[500px]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3" id="soundboard-tiles-container"></div>
-      </div>
-
-      <!-- LOG & CONSOLE FEED -->
-      <div class="silk-glass rounded-2xl p-3 flex flex-col gap-1.5 font-mono text-[10px]">
-        <div class="flex items-center justify-between text-slate-400 px-1 border-b border-white/5 pb-1">
-          <span class="flex items-center gap-1.5 text-cyan-300 font-semibold">
-            <span class="material-symbols-outlined text-[14px]">terminal</span>
-            AUDIO DISPATCH LOG // REALTIME AUTO-DJ MATRIX FEED
-          </span>
-          <div class="flex items-center gap-3">
-            <span class="text-slate-400 hidden sm:inline">LEERTASTE = CLUB-KICK • 1-9 = HOTKEYS • D = AUTO-DROP</span>
-            <button class="text-slate-400 hover:text-white transition-colors cursor-pointer" id="btn-clear-feed">[CLEAR]</button>
-          </div>
-        </div>
-        <div class="h-16 overflow-y-auto flex flex-col gap-1 p-1 bg-black/40 rounded-xl border border-white/5" id="realtime-log-feed"></div>
-      </div>
-    </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="h-9 silk-glass px-4 lg:px-6 flex items-center justify-between font-mono text-[10px] text-slate-400 border-t border-white/10 z-40">
+  <!-- ========================================================================= -->
+  <!-- FOOTER TICKER                                                             -->
+  <!-- ========================================================================= -->
+  <footer class="h-9 hud-glass px-4 lg:px-6 flex items-center justify-between font-mono text-[10px] text-slate-400 border-t border-cyan-500/20 z-40">
     <div class="flex items-center gap-3 overflow-hidden">
-      <span class="text-cyan-300 font-semibold flex items-center gap-1">
+      <span class="text-cyan-300 font-bold flex items-center gap-1">
         <span class="material-symbols-outlined text-xs">graphic_eq</span>
         <span>PEAK-TIME STREAM:</span>
       </span>
       <div class="flex items-center gap-3 truncate" id="footer-ticker-msg">
         <span>STATUS: 2.85 ‰ DAUERPEGEL [ESKALIERT]</span>
         <span class="text-slate-600">|</span>
-        <span>BASS-DRUCK: 142 dB PEAK</span>
+        <span>49 SOUNDFILES VOM GOOGLE DRIVE DIREKT ABGESPIELT</span>
         <span class="text-slate-600">|</span>
         <span class="text-rose-400">PFEFFI-VORRAT: REICHT NOCH BIS 08:00 UHR</span>
         <span class="text-slate-600">|</span>
-        <span class="text-violet-300">SPÄTI AN DER ECKE: GEPEILT 45m NORD-OST</span>
+        <span class="text-cyan-300">SPÄTI-DISTANZ: 42m NORD-OST</span>
       </div>
     </div>
-    <div class="flex items-center gap-3 shrink-0">
-      <div class="flex items-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span class="text-slate-300">NEO-KREUZBERG FLOOR-07</span>
-      </div>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+      <span class="text-slate-300">BERLIN FLOOR-07</span>
     </div>
   </footer>
 

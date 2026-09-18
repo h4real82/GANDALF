@@ -97,6 +97,16 @@ export class FaxxenSystem {
     }
   }
 
+  public triggerStrobeBurst(durationMs = 1200) {
+    if (!this.turboStrobeOverlay) return;
+    this.turboStrobeOverlay.classList.add('strobe-turbo-active');
+    setTimeout(() => {
+      if (!this.strobeActive && this.turboStrobeOverlay) {
+        this.turboStrobeOverlay.classList.remove('strobe-turbo-active');
+      }
+    }, durationMs);
+  }
+
   public stopStrobe() {
     this.strobeActive = false;
     if (this.turboStrobeOverlay) {

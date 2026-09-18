@@ -43,6 +43,17 @@ except ImportError:
     from .config import BASE_DIR, settings, set_api_key
     from .graph import agent_app
 
+# LangSmith Tracing integration
+try:
+    from langsmith import traceable
+except ImportError:
+    def traceable(name=None, run_type="chain", **kwargs):
+        def decorator(f):
+            return f
+        if callable(name):
+            return name
+        return decorator
+
 
 # ANSI styling helpers (safe for Windows terminals)
 class Colors:
@@ -73,6 +84,7 @@ def colorize(text: str, color_code: str) -> str:
     return text
 
 
+@traceable(name="gandalf_dev_cycle", run_type="chain")
 def run_graph_cycle(
     task: str,
     model: Optional[str] = None,
@@ -98,6 +110,8 @@ def run_graph_cycle(
         print(colorize(f"  🧙 G.A.N.D.A.L.F. — LangGraph Dev-Cycle", Colors.HEADER + Colors.BOLD))
         print(f"  Task: {colorize(task, Colors.CYAN)}")
         print(f"  Model: {chosen_model} | Max Iterations: {max_iterations} | Run ID: {run_id}")
+        if getattr(settings, "LANGCHAIN_TRACING_V2", False):
+            print(colorize(f"  🔍 LangSmith Tracing: Aktiv (Projekt: {settings.LANGCHAIN_PROJECT})", Colors.DIM + Colors.CYAN))
         print("=" * 64 + "\n")
 
     if not current_key and not quiet:
